@@ -2,8 +2,8 @@ Sub StockMacro()
 
 'this macro is intended for worksheets with yearly stock data
 'data must be sorted by date per unique ticker
-'for each unique ticker the yearly change, percent change, and yearly volume moved will be outputted to a summery table
-'from each summery table the ticker coresponding to the greatest percent decrease, increase, and total volume will also be recorded
+'for each unique ticker the yearly change, percent change, and yearly volume moved will be outputted to a summary table
+'from each summary table the ticker corresponding to the greatest percent decrease, increase, and total volume will also be recorded
 'this macro will automatically loop through each worksheet in a workbook
 
 'declare variables
@@ -22,7 +22,7 @@ LastRow = .Cells(Rows.Count, "A").End(xlUp).Row
 'start TickerTypes counter at 0
 TickerTypes = 0
 
-'Add headers for the new summery tables
+'Add headers for the new summary tables
 .Cells(1, 9).Value = ("Ticker")
 .Cells(1, 10).Value = ("Yearly Change")
 .Cells(1, 11).Value = ("Percent Change")
@@ -50,16 +50,16 @@ On Error Resume Next
         TickerTypes = 1 + TickerTypes
         'the close value is set for the ticker
         TickerClose = .Cells(i, 6)
-        'calculates the yearly change and reports out to summery table
+        'calculates the yearly change and reports out to summary table
         .Cells(TickerTypes + 1, 10) = TickerClose - TickerOpen
-        'sets percent cell to % formattings and reports out the percent change to summery table
+        'sets percent cell to % formattings and reports out the percent change to summary table
         .Cells(TickerTypes + 1, 11).NumberFormat = "0.00%"
         .Cells(TickerTypes + 1, 11) = .Cells(TickerTypes + 1, 10) / TickerOpen
-        'reports out the ticker symbol to the summery table
+        'reports out the ticker symbol to the summary table
         .Cells(TickerTypes + 1, 9) = .Cells(i, 1).Value
-        'reports out the final volume to the summery table
+        'reports out the final volume to the summary table
         .Cells(TickerTypes + 1, 12) = Volume
-        'conditional formatting of the yearly change in the summery table
+        'conditional formatting of the yearly change in the summary table
             If .Cells(TickerTypes + 1, 10) > 0 Then
                 .Cells(TickerTypes + 1, 10).Interior.ColorIndex = 4
             ElseIf .Cells(TickerTypes + 1, 10) < 0 Then
@@ -72,7 +72,7 @@ On Error Resume Next
     End If
 Next i
 
-'find the greatest percent increase and return the value, ticker associated, and a row title
+'find the greatest percent increase in the summary table and returns the value, ticker associated, and a row title
 For i = 2 To (TickerTypes + 1)
     If .Cells(i, 11) = Application.WorksheetFunction.Max(.Range("K2:K" & (TickerTypes + 1))) Then
       .Cells(2, 15).Value = "Greatest % Increase"
@@ -82,7 +82,7 @@ For i = 2 To (TickerTypes + 1)
 
     End If
 Next i
-'find greatest percent decrease and return the value, the ticker associated, and a row title
+'find greatest percent decrease in the summary table  and return the value, the ticker associated, and a row title
 For i = 2 To (TickerTypes + 1)
     If .Cells(i, 11) = Application.WorksheetFunction.Min(.Range("K2:K" & (TickerTypes + 1))) Then
       .Cells(3, 15).Value = "Greatest % Decrease"
@@ -92,7 +92,7 @@ For i = 2 To (TickerTypes + 1)
 
     End If
 Next i
-'find the greatest total volume and return the value, title associated, and a row title
+'find the greatest total volume in the summary table  and return the value, title associated, and a row title
 For i = 2 To (TickerTypes + 1)
     If .Cells(i, 12) = Application.WorksheetFunction.Max(.Range("L2:L" & (TickerTypes + 1))) Then
       .Cells(4, 15).Value = "Greatest Total Volume"
